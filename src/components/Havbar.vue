@@ -1,0 +1,72 @@
+<template>
+  <div>
+    <b-navbar toggleable="lg" type="light">
+      <div class="container">
+        <b-navbar-brand href="#">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="35" viewBox="0 0 40 35">
+            <path
+              fill="#FFBC0D"
+              fill-rule="evenodd"
+              d="M28.75 2.5C32.203 2.5 35 17.051 35 35h5c0-19.33-5.036-35-11.25-35-3.534 0-6.687 4.71-8.75 12.074C17.94 4.709 14.786 0 11.25 0 5.039 0 0 15.67 0 35h5C5 17.051 7.8 2.5 11.25 2.5c3.452 0 6.252 13.432 6.252 30H22.5c0-16.568 2.8-30 6.25-30"
+            />
+          </svg>
+        </b-navbar-brand>
+
+        <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+        <b-collapse id="nav-collapse" is-nav>
+          <b-navbar-nav>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/">Главная</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link class="nav-link" to="/foods">Меню</router-link>
+            </li>
+          </b-navbar-nav>
+
+          <!-- Right aligned nav items -->
+          <b-navbar-nav class="ml-auto">
+            <li class="nav-item">
+              <router-link class="nav-link" to="/basket">
+                Корзина
+                <b-icon-bag></b-icon-bag>
+                <span
+                  class="badge badge-success ml-2"
+                >{{ basketUpdate ? basketUpdate.length : numberOrders.length }}</span>
+              </router-link>
+            </li>
+          </b-navbar-nav>
+        </b-collapse>
+      </div>
+    </b-navbar>
+  </div>
+</template>
+
+
+
+<script>
+import axios from "axios";
+export default {
+  name: "Navbar",
+  props: ["basketUpdate"],
+  data() {
+    return {
+      numberOrders: []
+    };
+  },
+  methods: {
+    setNumbers(data) {
+      this.numberOrders = data;
+    }
+  },
+  mounted() {
+    axios
+      .get("http://localhost:3000/basket")
+      .then(response => this.setNumbers(response.data))
+      .catch(error => console.log(error));
+  }
+};
+</script>
+
+<style>
+</style>
